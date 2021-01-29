@@ -1,0 +1,220 @@
+{
+	"info": {
+		"_postman_id": "53fc3c7c-d7e7-40c8-87a2-78636c423395",
+		"name": "Kaleido Challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Forums",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:4000/api/forum",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"forum"
+					]
+				},
+				"description": "Returns all the compatible forums with the name, description,address, and version."
+			},
+			"response": []
+		},
+		{
+			"name": "Get Single Forum",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:4000/api/forum/{{forum_address}}",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"forum",
+						"{{forum_address}}"
+					]
+				},
+				"description": "Returns a single forum with name, description and address."
+			},
+			"response": []
+		},
+		{
+			"name": "Create New Forum",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"forumName\": \"Postman Forum\",\r\n    \"forumDescription\": \"A forum made from postman\"\r\n}"
+				},
+				"url": {
+					"raw": "localhost:4000/api/forum",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"forum"
+					]
+				},
+				"description": "Deploys a new Forum contract to the block chain."
+			},
+			"response": []
+		},
+		{
+			"name": "Add Thread",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"createdBy\": \"Matt2\",\r\n    \"threadName\": \"A different thread1\",\r\n    \"postBody\": \"First post of the thread\"\r\n}"
+				},
+				"url": {
+					"raw": "localhost:4000/api/forum/{{forum_address}}/thread",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"forum",
+						"{{forum_address}}",
+						"thread"
+					]
+				},
+				"description": "Adds a thread to the forum"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Thread",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:4000/api/forum/{{forum_address}}/thread/{{thread_id}}",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"forum",
+						"{{forum_address}}",
+						"thread",
+						"{{thread_id}}"
+					]
+				},
+				"description": "Gets the thread and its posts"
+			},
+			"response": []
+		},
+		{
+			"name": "Add Post",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"postBody\": \"This is a post woop woop\",\r\n    \"postedBy\": \"matty p\"\r\n}"
+				},
+				"url": {
+					"raw": "localhost:4000/api/forum/{{forum_address}}/thread/{{thread_id}}",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"forum",
+						"{{forum_address}}",
+						"thread",
+						"{{thread_id}}"
+					]
+				},
+				"description": "Adds a post to the thread"
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Threads",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:4000/api/forum/{{forum_address}}/thread",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"forum",
+						"{{forum_address}}",
+						"thread"
+					]
+				},
+				"description": "Returns a list of threads from the specified forum address."
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "forum_address",
+			"value": "2a5c9917bbb9f2be5586d62662fbe1aaf8835d19"
+		},
+		{
+			"key": "thread_id",
+			"value": "0"
+		}
+	]
+}

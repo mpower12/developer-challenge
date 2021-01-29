@@ -19,28 +19,62 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
+/**
+ * Sets up the theme colors
+ */
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#202CE0"
+    },
+    secondary: {
+      main: "#EE34A8"
+    }
+  }
+});
 
+/**
+ * Sets up a style so the app bar sits on top
+ */
 const useStyles = makeStyles((theme) => ({
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
   }
 }));
 
+/**
+ * Entry point for the react app
+ */
 function App() {
 
+  // used to indicate if the main page is loading data
   const [loading, setLoading] = useState(false);
+  
+  // makes the error message available as a state if 
   const [errorMsg, setErrorMsg] = useState(null);
 
+  // determines if the necessary application data has been initialized
   const [initialized, setInitialized] = useState(false);
 
+  // stores all the forums retrieved from the backend
   const [forums, setForums] = useState([]);
+
+  // selected forum address
   const [selectedForum, setSelectedForum] = useState('');
+
+  // selected forum object --- this could probably be condensed with the address
   const [selectedForumObj, setSelectedForumObj] = useState(null);
+
+  // all threads associated with the selected forum.
   const [selectedForumThreads, setSelectedForumThreads] = useState([]);
 
   const classes = useStyles();
   
+  /**
+   * Gets all the forums from the backend
+   */
   async function getForums() {
     setLoading(true);
     setErrorMsg(null);
@@ -57,6 +91,9 @@ function App() {
     setLoading(false);
   }
 
+  /**
+   * Gets all the threads from the selcted forum
+   */
   async function getForumThreads() {
     setLoading(true);
     setErrorMsg(null);
@@ -74,6 +111,10 @@ function App() {
   }
 
 
+  /**
+   * Gets a single forum from the forums list
+   * @param {*} id id of the forum 
+   */
   function getForum(id) {
     let retForum = null;
     // console.log('Getting forum: ' + id);
@@ -91,6 +132,10 @@ function App() {
     return retForum;
   }
 
+  /**
+   * Helper method to update a forum object if needed.
+   * @param {*} forumObj the forum obj used to update the stored obj
+   */
   function updateForum(forumObj) {
     if(!forums) {
       setForums([forumObj]);
@@ -112,16 +157,24 @@ function App() {
 
   }
 
+  /**
+   * Single run when the application starts to get all forums.
+   */
   useEffect(() => {
     getForums();
   }, [])
 
+  /**
+   * Runs when the selected forum is updated
+   */
   useEffect(() => {
     // console.log('The selected forum has been updated. ID is: ' + selectedForum);
+    // If the app was not initialized we get all forums and set the state
     if (!initialized) {
       getForums();
       setInitialized(true);
     }
+    // if selected forum is not null/undefined we get all the threads
     if (selectedForum) {
       getForumThreads();
       let obj = getForum(selectedForum);
@@ -131,6 +184,7 @@ function App() {
 
   return (
     <Router>
+      <ThemeProvider theme={theme}>
       <Grid container spacing={1} direction="column">
         <Grid container item direction="row">
           <AppBar position="fixed" className={classes.appBar}>
@@ -158,15 +212,18 @@ function App() {
           initialized={initialized}/>
         </Route>
       </Switch>
+      </ThemeProvider>
     </Router>
   );
 }
 
+/**
+ * Initial application view.  Shows list of forums and lets user create new ones.
+ * 
+ */
 const Home = ({forums, setSelected, loading, getForums}) => {
 
   const [addingForum, setAddingForum] = useState(false);
-
-
 
   return (
   <Grid container direction="column" alignItems="center" style={{paddingTop: '68px'}} spacing={2}>
@@ -204,6 +261,10 @@ const Home = ({forums, setSelected, loading, getForums}) => {
   );
 }
 
+/**
+ * A component to render the list of forums.
+ * @param {*} props 
+ */
 const ForumList = (props) => {
 
   function renderForumListItems() {
@@ -227,6 +288,10 @@ const ForumList = (props) => {
   )
 }
 
+/**
+ * A component that renders a single forum for access
+ * @param {*} props 
+ */
 const ForumListItem = (props) => {
   
   return(
@@ -241,6 +306,10 @@ const ForumListItem = (props) => {
   )
 }
 
+/**
+ * Form component for adding a new forum.
+ * @param {*} props 
+ */
 const AddForumForm = (props) => {
 
   const [forumName, setForumName] = useState('');

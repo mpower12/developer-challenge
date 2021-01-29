@@ -17,8 +17,14 @@ import RefreshIcon from '@material-ui/icons/Refresh';
 import ViewHeadlineIcon from '@material-ui/icons/ViewHeadline';
 import Typography from '@material-ui/core/Typography';
 
+/**
+ * Sets the width for our drawer
+ */
 const drawerWidth = 500;
 
+/**
+ * Styles so that the drawer does not clip the content
+ */
 export const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -45,22 +51,38 @@ export const useStyles = makeStyles((theme) => ({
 
 }));
 
+/**
+ * The main forum view. Displays a list of threads, A single selected thread, and a new thread form.
+ * @param {*} props 
+ */
 export const Forum = (props) => {
 
     const classes = useStyles();
   
     let { id } = useParams();
   
+    /**
+     * Holds the state of the currently selected thread. Undefined/Null is no thread.
+     */
     const [selectedThread, setSelectedThread] = useState(undefined);
   
+    /**
+     * The forum obj of the current forum.
+     */
     const [forumObj, setSelectedForumObj] = useState(null);
 
+    /**
+     * Determines if the add thread form should be shown.
+     */
     const [addingThread, setAddingThread] = useState(false);
   
+    /**
+     * Gets a single forum data from the backend.
+     */
     async function getSingleForum() {
       try {
         const res = await fetch(`/api/forum/${id}`);
-        const _forums = await res.json().then(response => {
+        await res.json().then(response => {
           setSelectedForumObj(response);
         }).catch(error => {
           console.log(error);
@@ -70,7 +92,9 @@ export const Forum = (props) => {
       }
     }
 
-
+    /**
+     * Used for when the page is loaded on the forum route
+     */
     useEffect(() => {
       if (id) {
         console.log('Paged loaded with id: ' + id);
@@ -84,6 +108,9 @@ export const Forum = (props) => {
       }
     }, []);
   
+    /**
+     * Renders all threads.
+     */
     function renderThreadLinks() {
       
       let fThreadList = [];
@@ -96,6 +123,9 @@ export const Forum = (props) => {
       return fThreadList;
     }
 
+    /**
+     * Closes the currently selected thread
+     */
     function clearSelectedThread() {
       setSelectedThread(undefined);
     }
@@ -146,8 +176,15 @@ export const Forum = (props) => {
     );
   };
   
+  /**
+   * Component that displays thread info and allows the user to open the specific thread.
+   * @param {*} props 
+   */
  const ThreadLink = (props) => {
   
+  /**
+   * Sets the thread.
+   */
     function setThread() {
       props.setThread(props.thread);
     }
@@ -166,20 +203,25 @@ export const Forum = (props) => {
       </Grid>
       <Divider variant="fullwidth"/>
       </div>
-      // <span>
-      //   <p>{props.thread.threadName + ' | Created By: ' + props.thread.createdBy}</p>
-      //   <IconButton edge="start" onClick={setThread}>
-      //        <ViewHeadlineIcon/>
-      //      </IconButton>
-      // </span>
     )
   
   }
   
+  /**
+   * Displays a single thread and all of its posts.  Allows users to add new posts.
+   * @param {*} props 
+   */
  const FThread = (props) => {
   
     const [selectedThread, setSelectedThread] = useState(undefined);
+    /**
+     * Used to indicate if posts are loading
+     */
     const [loading, setLoading] = useState(false);
+
+    /**
+     * Used to indicate if we are showing the post form or not.
+     */
     const [addingPost, setAddingPost] = useState(false);
 
     async function getThread() {
@@ -198,10 +240,16 @@ export const Forum = (props) => {
         setLoading(false);
       }
     }
+    /**
+     * Called when the thread changes so we can get all posts associated.
+     */
     useEffect(() => {
       getThread();
     }, [props.thread]);
   
+    /**
+     * Renders all posts from the thread
+     */
     function renderFPosts() {
       let posts = [];
   
@@ -214,6 +262,9 @@ export const Forum = (props) => {
       return posts;
     }
 
+    /**
+     * Closes the thread
+     */
     function clearSelectedThread() {
       setSelectedThread(undefined);
       props.clearThread();
@@ -256,10 +307,25 @@ export const Forum = (props) => {
     )
   }
   
+  /**
+   * Form for users to create a new post
+   * @param {*} props 
+   */
   const NewPostForm = (props) => {
 
+    /**
+     * Body of the post
+     */
     const [postBody, setPostBody] = useState('');
+
+    /**
+     * Name of person posting
+     */
     const [posterName, setPosterName] = useState('');
+
+    /**
+     * Used to indicate if the post request is still working.
+     */
     const [loading, setLoading] = useState(false);
 
     async function createPost() {
@@ -276,9 +342,6 @@ export const Forum = (props) => {
         await res.json().then(response => {
           props.refreshThread();
           clearFields();
-          //console.log('Thread has been added');
-          //props.refreshForum();
-          //props.setAddingThread(false);
           setLoading(false);
         }).catch(error => {
           console.log(error);
@@ -361,6 +424,10 @@ export const Forum = (props) => {
     )
   }
 
+  /**
+   * Component to display the post
+   * @param {*} props 
+   */
   const FPost = (props) => {
   
   
@@ -386,6 +453,11 @@ export const Forum = (props) => {
     )
   }
 
+
+  /**
+   * Component that provides a form for the user to create a new thread.
+   * @param {*} props 
+   */
   const NewThreadForm = (props) => {
     
     const [name, setName] = useState('');

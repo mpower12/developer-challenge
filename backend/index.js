@@ -13,14 +13,16 @@ const {
   PORT,
   FROM_ADDRESS,
   CONTRACT_MAIN_SOURCE_FILE,
-  CONTRACT_CLASS_NAME,
-  KALEIDO_API_KEY
-} = require('./config.example');
+  CONTRACT_CLASS_NAME
+} = require('./config');
 
 let swaggerClient; // Initialized in init()
 
 app.use(bodyparser.json());
 
+/**
+ * Used to filter out forums by version
+ */
 const forum_version = '0.0.4';
 
 /*

@@ -7,19 +7,31 @@ pragma experimental ABIEncoderV2;
   * @dev Create and manage forum threads and posts
   */
 contract forum {
+    /**
+     * @dev the name of the forum
+     */
     string public _forumName;
 
+    /**
+     * @dev the description of the forum
+     */
     string public _forumDescription;
 
+    /**
+     * @dev the version of the forum.  this is used to filter out old incompatible forums when requesting them.
+     */
     string public _version = "0.0.4";
 
+    /**
+     * @dev represents a single thread
+     */
     struct FThread {
       int id;
 
       string threadName;
 
       string createdBy;
-      //uint dateCreated;
+
       int postCount;
 
       bool isValue;
@@ -27,6 +39,10 @@ contract forum {
       mapping(int => FPost) posts;
     }
 
+    /**
+     * @dev Represents a forum thread without the posts used for getting
+     * a list of threads
+     */
     struct FThreadMeta {
       int id;
 
@@ -39,6 +55,9 @@ contract forum {
       bool isValue;
     }
 
+    /**
+     * @dev represents a single post.
+     */
     struct FPost {
       int id;
 
@@ -47,15 +66,17 @@ contract forum {
       string postedBy;
 
       int threadId;
-      //uint datePosted;
 
       bool isValue;
     }
 
+    // the number of threads
     int _threadCount;
 
+    // the owner of the forum
     address public owner;
 
+    // a mapping of threads to their id.
     mapping(int => FThread) public _threads;
 
     /**
@@ -85,23 +106,31 @@ contract forum {
 
 
     /**
-      * @dev Set the value
+      * @dev Set the description
       * @param forumDescription The new value
       */
     function setDescription(string memory forumDescription) public {
         _forumDescription = forumDescription;
     }
     /**
-      * @dev Get the value
+      * @dev Get the description
       */
     function getDescription() public view returns (string memory forumDescription) {
         return _forumDescription;
     }
-
+    /**
+      * @dev Gets the forum information as a tuple
+      */
     function getForumInfo() public view returns (string memory forumName, string memory forumDescription, string memory version) {
       return (_forumName, _forumDescription, _version);
     }
 
+    /**
+      * @dev Adds a new thread
+      * @param threadName name of the new thread
+      * @param createdBy creator of the thread
+      * @param postBody body of the first post
+      */
     function addThread(string memory threadName, string memory createdBy, string memory postBody) public {
       FThread memory t = FThread(_threadCount, threadName,createdBy, 1, true);
       _threads[_threadCount] = t;
@@ -112,14 +141,25 @@ contract forum {
       _threadCount++;
     }
 
+    /**
+      * @dev Get the number of threads
+      */
     function getThreadCount() public view returns (int threadCount) {
       return _threadCount;
     }
 
+    /**
+      * @dev Get the number of posts in the specified thread.
+      * @param threadId the id of the thread
+      */
     function getThreadPostCount(int threadId) public view returns(int postCount) {
       return _threads[threadId].postCount;
     }
 
+    /**
+    * @dev Gets the thread information for the specified id
+    * @param id the id of the thread
+    */
     function getThread(int threadId) public view returns(int id, string memory threadName, string memory createdBy, int postCount) {
       if (_threads[threadId].isValue) {
         return (_threads[threadId].id, _threads[threadId].threadName, _threads[threadId].createdBy, _threads[threadId].postCount);
@@ -128,6 +168,12 @@ contract forum {
       }
     }
 
+    /**
+    * @dev Add a post to the specified thread
+    * @param postBody the body of the post
+    * @param postedBy who created the post
+    * @param threadId the thread to add the post to
+    */
     function addPost(string memory postBody, string memory postedBy, int threadId) public {
       if (_threads[threadId].isValue) {
         FThread storage t = _threads[threadId];
@@ -136,6 +182,11 @@ contract forum {
       }
     }
 
+      /**
+      * @dev Gets the specific post
+      * @param threadId the id of the thread to get the post from
+      * @param postId the id of the post to get
+      */
     function getPost(int threadId, int postId) public view returns(int id, string memory postBody, string memory postedBy, int ownerId) {
       if (_threads[threadId].isValue) {
         FThread storage t = _threads[threadId];
@@ -146,6 +197,10 @@ contract forum {
       return (-1, "Post not found in thread", "n/a", -1);
     }
 
+    /**
+      * @dev Gets all the posts from a thread
+      * @param threadId the id of the thread
+      */
     function getPosts(int threadId) public returns(FPost[] memory posts) {
       FThread storage t = _threads[threadId];
       FPost[] memory _posts = new FPost[](uint(t.postCount));
@@ -154,7 +209,9 @@ contract forum {
       }
       return _posts;
     }
-
+    /**
+      * @dev Gets all the threads
+      */
     function getThreads() public returns(FThreadMeta[] memory threads) {
       FThreadMeta[] memory retThreads = new FThreadMeta[](uint(_threadCount));
       for(int256 i = 0; i < int256(_threadCount); i++) {

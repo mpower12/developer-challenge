@@ -1,128 +1,85 @@
-# Developer Challenge
+# Developer Challenge - Blockchain Forum
 
-Build a DApp on Kaleido.
+## Overview
 
-Fork this repo, choose a use case you think would be interesting to build as a decentralized application (DApp), then get creative and have fun.
+This is a basic forum that uses blockchain to store and view data.  Users can create and browse the different
+forums that have been created on the blockchain.  Though this is a basic example several things could be added in the future
+to allow for more flexibility such as user authentication, timestamping of thread and post creation, and moderation privileges.
 
-... and please **ask questions** - we don't want you to be stuck, an appreciate collaboration through the project.
+# How to run
 
-## What is a DApp?
+## Install
 
-- [Blockgeeks](https://blockgeeks.com/guides/dapps/)
-  - Background of how DApps have evolved in the wild, and why
-- [State of the DApps](https://www.stateofthedapps.com/)
-  - All that's been built in the wonderful world of public Ethereum
-- [Kaleido docs](https://docs.kaleido.io/kaleido-platform/full-stack/dapps/)
-  - DApps in an Enterprise context
+Install the dependencies for both the frontend and backend.
 
-## What does done look like?
+1. Navigate to each directory.
+2. Run the command `npm install`
 
-We would like your project to demonstrate your concept end-to-end, but it doesn't need to be a complete application.
+## Run Locally
 
-It must:
-- Have a Web based user experience, built in React
-- Have a backend-for-the-frontend (BFF), written in Node.js
-- Have on-chain Smart Contract logic, written in Solidity
-- Use a Kaleido blockchain 
-- Contain a README that gives a quick overview of the use case, and tells us how to run it
+Open two terminals, we will run the backend in one and the frontend in the other.
 
-How much time you spend on each tier is down to you - depending on your interests and the skills you want to show.
+1. Run backend in the first terminal.
+    1. `cd backend`
+    2. `npm start`
+2. Run frontend in the second terminal.
+    1. `cd frontend`
+    2. `npm start`
 
-> We've given you a basic, but functional, starting point for each layer of the stack.
-> ... and yes, we know the UI is a bit naff ;-)
+# Frontend
 
-## Some ideas
+## Browse Available Forums
 
-These are just ideas to give inspiration
+![Browse Forums](readme-resources/browse_forum.png)
 
-Choose something/anything you think is interesting, and gives you license to focus on the bit of the stack you care about.
+1. <b>Home Button</b> - Returns the user to the forum browsing page.
+2. <b>New forum</b> - Opens the new forum form.
+3. <b>Forum List</b> - Displays forum name and description.  The button opens the associated forum view.
+## Create New Forum
 
-It's your choice whether you focus more on how things work under the covers, or how things feel in the UI/UX.
+![Create forum form](readme-resources/create_forum.png)
 
-- A blockchain backed ratings system for Movies
-- A racing simulation (you can even see one here in our [Racecourse sample](https://github.com/kaleido-io/racecourse))
-- A funky avatar generator, where each avatar is backed by a unique token
-- A conference ticketing system with camera & QR code integration
-- A digital collectable swag bag, earned by posting to social media
+1. <b>Forum Name</b> - Name for the new forum.
+2. <b>Description</b> - Description for the new forum.
+3. <b>Submit</b> - Submits the new forum to be created.
+4. <b>Cancel</b> - Closes the form without creating a new forum.
+## View Thread
 
-## Want more dev stack?
+![Thread View](readme-resources/view_thread.png)
+1. <b>Forum Name</b> - Displays the name of the forum being viewed.
+2. <b>Thread Name</b> - Displays the name of the thread being viewed.
+3. <b>Post View</b> - Displays all the posts on the thread.  Includes the post number, post body, and post creator.
+4. <b>New Post</b> - Allows the user to create a new post.
+5. <b>Close</b> - Closes the thread.
+6. <b>New Thread</b> - Creates a new thread.
 
-Here are some dev technologies (not in the starter repo) that we love at Kaleido:
-- Material UI (or insert your favorite component library here) - at Kaleido we love re-use
-- Redux for front-end state
-- GraphQL (Apollo) for front-end/back-end comms
-- WebSockets (Socket.io) for live updating and notifications
-- MongoDB NoSQL database for configuration and local state
+## Create New Thread
 
-Remember we'd like a thin thread through your DApp, so choose technologies you think you can be productive in.
+![New thread](readme-resources/new_thread.png)
+1. <b>Thread Name</b> - Name of the new thread.
+2. <b>Post</b> - Content of the first post.
+3. <b>Poster Name</b> - Name of the user posting the thread.
+4. <em>Actions</em>
+    1. <b>Submit</b> - Submits the new Thread.
+    2. <b>Cancel</b> - Cancels the creation of the new thread.
 
-Want to throw away most of the original `create-react-app` + `express` based repo?
-No problem. Go for it.
+## Create New Post
+![New Post](readme-resources/new_post.png)
 
-## Setting up your Kaleido blockchain
+1. <b>Post Body</b> - Body of the new post.
+2. <b>Poster Name</b> - Name of the person submitting the post.
+3. <em>Actions</em>
+    1. <b>Submit</b> - Creates the new post.
+    2. <b>Cancel</b> - Cancels out of creating the new post.
 
-Run through our [Quick Start](https://docs.kaleido.io/using-kaleido/quick-start-ethereum/first-blockchain/).
+# Backend
 
-When you're done, you will have your very own blockchain!
+The backend was created with the intent to make the frontend actions as simple and as easy as possible.
 
-## Getting this repo up and running
+The documentation for the backend API can be found here:
 
-This repo is a thin layer on top of [create-react-app](https://github.com/facebook/create-react-app).
+https://documenter.getpostman.com/view/4863482/TW6xo8Yx
 
-### Configure the config file
+I have included a postman collection as well under the path:
 
-- Go to the Kaleido console page for your node
-  - `KALEIDO_REST_GATEWAY_URL`: Grab the `REST API Gateway` URL
-  - `FROM_ADDRESS`: Grab the `User account` - this will be your managed wallet signing key
-  ![REST API Gateway URL](readme1.png)
-- Click the `Connect App` button in the Kaleido console on your blockchain node
-  - Then `Create new App Cred` create yourself a secure credential
-- Once on the `App Cred Details` page you will need:
-  - `KALEIDO_AUTH_USERNAME`: The generated `ID` (the username)
-  - `KALEIDO_AUTH_PASSWORD`: The generated `Password`
-  ![App Credential](readme2.png)
-  
-
-Copy [backend/config.example.json](backend/config.example.json) to `backend/config.json` and edit it to the values from the Kaleido Connect panel.
-
-### Start it up
-
-```
-# Start the backend in one terminal
-cd backend
-npm i
-npm start
-
-# Start a dev server for your react app in another
-# Note the package.json sets `"proxy": "http://localhost:4000"` to pass through API calls to the backend
-cd frontend
-npm i
-npm start
-```
-
-   
-## Blockchain accelerators
-
-Some full-stack blockchain services available out-of-the-box with Kaleido that you might find helpful in getting your use case built quickly:
-- [Block explorer](https://docs.kaleido.io/kaleido-services/block-explorer/)
-  - See the transactions that you submit from your application mined into blocks in your blockchain
-- [REST API Gateway](https://docs.kaleido.io/kaleido-services/ethconnect)
-  - Full details of the REST APIs you created in the quick start, and used in the sample deployment in this repo
-- [IPFS](https://docs.kaleido.io/kaleido-services/ipfs)
-  - Decentralized file storage, with a way to "pin" your files to your on-chain logic using hashes. Easy way to store things to big to put on the blockchain itself.
-- [Token Factory](https://docs.kaleido.io/kaleido-services/token-factory)
-  - Create tokens according to the ERC20/ERC721 standard via a factory UI/API, without needing to learn the code.
-- [Ethereum Dev Tooling](https://docs.kaleido.io/developers/smart-contracts/)
-  - Great tools to help you develop your smart contract logic
-
-## Want to know our style?
-
-If you want to be inspired by the Kaleido brand...
-
-
-### Styles
-
-![Product Colors](StyleGuide/Colors.png?raw=true 'Product Colors')
-
-![Text Styles](StyleGuide/TextStyles.png?raw=true 'Text Styles')
-
+`readme-resources/Kaleido Challenge.postman_collection.json`
